@@ -22,3 +22,15 @@ def test_create_booking(created_booking):
         f"Response:\n{created_booking}\n"
         f"Ожидаемое имя: {BookingData.LASTNAME.value}"
     )
+
+def test_update_booking(booking_client, created_booking, auth_token, headers, valid_booking_payload):
+    booking_id = created_booking['bookingid']
+    headers.update({"Cookie": f"token={auth_token}"})
+    payload = valid_booking_payload.build()
+    payload.update({"firstname": BookingData.UPDATE_FIRSTNAME.value, "lastname": BookingData.UPDATE_LASTNAME.value})
+    update_response = booking_client.update_booking(booking_id, headers, payload)
+    assert update_response.json()['firstname'] == BookingData.UPDATE_FIRSTNAME.value
+    assert update_response.json()['lastname'] == BookingData.UPDATE_LASTNAME.value
+    print()
+    print(update_response.json())
+    print(update_response.status_code)

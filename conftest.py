@@ -1,14 +1,15 @@
 import pytest
+import requests
 
 from clients.booking_client import BookingClient
 from models.booking import Booking, BookingDates
 from src.constant import BookingData
+from src.settings import settings
 
-BASE_URL = "https://restful-booker.herokuapp.com"
 
 @pytest.fixture
 def booking_client(): # инициализация клиента
-    return BookingClient(baseurl=BASE_URL)
+    return BookingClient(baseurl=settings.base_url)
 
 @pytest.fixture
 def valid_booking_payload():
@@ -34,3 +35,9 @@ def created_booking(booking_client, valid_booking_payload, headers):
     data = response.json()
     yield data
     booking_client.delete_booking(data['bookingid'], headers)
+
+@pytest.fixture
+def auth_token(booking_client):
+    response = booking_client.get_token()
+    data = response.json()
+    return data['token']
