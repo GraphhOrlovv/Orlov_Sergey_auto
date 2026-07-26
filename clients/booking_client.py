@@ -1,5 +1,7 @@
 import requests
+
 from src.settings import settings
+
 
 class BookingClient:
     def __init__(self, baseurl):
@@ -9,13 +11,17 @@ class BookingClient:
         return requests.post(url=f"{self.baseurl}/booking", json=data, headers=headers)
 
     def delete_booking(self, booking_id: int, headers: dict) -> requests.Response:
-        return requests.delete(f"{self.baseurl}/booking/{str(booking_id)}", headers=headers)
+        return requests.delete(
+            f"{self.baseurl}/booking/{str(booking_id)}", headers=headers
+        )
 
     def get_token(self) -> requests.Response:
-        return requests.post(f"{self.baseurl}/auth", json={
-            "username": settings.user_name,
-            "password": settings.password
-        })
+        return requests.post(
+            f"{self.baseurl}/auth",
+            json={"username": settings.user_name, "password": settings.password},
+        )
 
     def update_booking(self, booking_id: int, headers: dict, data) -> requests.Response:
-        return requests.put(f"{self.baseurl}/booking/{str(booking_id)}", headers=headers, json=data)
+        return requests.put(
+            f"{self.baseurl}/booking/{str(booking_id)}", headers=headers, json=data
+        )

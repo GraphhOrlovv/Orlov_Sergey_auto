@@ -1,5 +1,4 @@
 import pytest
-import requests
 
 from clients.booking_client import BookingClient
 from models.booking import Booking, BookingDates
@@ -8,8 +7,9 @@ from src.settings import settings
 
 
 @pytest.fixture
-def booking_client(): # инициализация клиента
+def booking_client():  # инициализация клиента
     return BookingClient(baseurl=settings.base_url)
+
 
 @pytest.fixture
 def valid_booking_payload():
@@ -18,26 +18,26 @@ def valid_booking_payload():
         lastname=BookingData.LASTNAME.value,
         totalprice=1000,
         depositpaid=True,
-        bookingdates=BookingDates(
-            checkin="2027-01-01",
-            checkout="2027-01-01"
-        ),
-        additionalneeds="Breakfast"
+        bookingdates=BookingDates(checkin="2027-01-01", checkout="2027-01-01"),
+        additionalneeds="Breakfast",
     )
+
 
 @pytest.fixture
 def headers():
     return {"Content-Type": "application/json"}
+
 
 @pytest.fixture
 def created_booking(booking_client, valid_booking_payload, headers):
     response = booking_client.create_booking(valid_booking_payload.build(), headers)
     data = response.json()
     yield data
-    booking_client.delete_booking(data['bookingid'], headers)
+    booking_client.delete_booking(data["bookingid"], headers)
+
 
 @pytest.fixture
 def auth_token(booking_client):
     response = booking_client.get_token()
     data = response.json()
-    return data['token']
+    return data["token"]

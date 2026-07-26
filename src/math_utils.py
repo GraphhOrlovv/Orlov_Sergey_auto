@@ -7,6 +7,7 @@ class Math_Operations:
             raise ZeroDivisionError("Делить на ноль нельзя!")
         return a / b
 
+
 # res = Math_Operations()
 #
 # print(res.divide(5, 4))
