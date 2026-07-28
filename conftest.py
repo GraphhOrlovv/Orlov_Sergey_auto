@@ -15,7 +15,7 @@ def base_url():
 @pytest.fixture(scope="session")
 def page():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=False, slow_mo=2000)
         context = browser.new_context()
         page = context.new_page()
         yield page
