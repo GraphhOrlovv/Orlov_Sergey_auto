@@ -1,5 +1,9 @@
+import allure
+
+
 class Math_Operations:
 
+    @allure.step("Деление двух чисел")
     def divide(self, a, b):
         if not isinstance(a, int | float) or not isinstance(b, int | float):
             raise TypeError("Здесь должны быть только числа")

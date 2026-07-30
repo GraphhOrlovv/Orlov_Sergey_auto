@@ -1,3 +1,5 @@
 /.idea
 /.git
 /.venv
+/allure-results
+/tests/allure-results

@@ -1,25 +1,37 @@
+import allure
+
 from models.booking import CreateBookingResponse
 from src.constant import BookingData
 
+pytestmark = [
+    allure.parent_suite("Тестирование букинг сервиса"),
+    allure.suite("Создание, удаление, обновление"),
+]
 
+
+@allure.title("Создание брони - заголовок")
 def test_create_booking(created_booking):
     try:
-        parsed = CreateBookingResponse(**created_booking)
+        with allure.step("Проверка парсинга тела запроса"):
+            parsed = CreateBookingResponse(**created_booking)
     except Exception as e:
         raise AssertionError(f"Структура ответа не соответствует данным: {e}")
 
-    assert parsed.booking.bookingdates.checkin == "2027-01-01"
+    with allure.step("Проверка даты брони"):
+        assert parsed.booking.bookingdates.checkin == "2027-01-01"
 
-    assert created_booking["booking"]["firstname"] == BookingData.FIRSTNAME.value, (
-        "Вернулось некорректное имя\n"
-        f"Response:\n{created_booking}\n"
-        f"Ожидаемое имя: {BookingData.FIRSTNAME.value}"
-    )
-    assert created_booking["booking"]["lastname"] == BookingData.LASTNAME.value, (
-        "Вернулось некорректная фамилия\n"
-        f"Response:\n{created_booking}\n"
-        f"Ожидаемое имя: {BookingData.LASTNAME.value}"
-    )
+    with allure.step("Проверка имени клиента"):
+        assert created_booking["booking"]["firstname"] == BookingData.FIRSTNAME.value, (
+            "Вернулось некорректное имя\n"
+            f"Response:\n{created_booking}\n"
+            f"Ожидаемое имя: {BookingData.FIRSTNAME.value}"
+        )
+    with allure.step("Проверка фамилии клиента"):
+        assert created_booking["booking"]["lastname"] == BookingData.LASTNAME.value, (
+            "Вернулось некорректная фамилия\n"
+            f"Response:\n{created_booking}\n"
+            f"Ожидаемое имя: {BookingData.LASTNAME.value}"
+        )
 
 
 def test_update_booking(

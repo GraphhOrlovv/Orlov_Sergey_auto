@@ -1,12 +1,19 @@
 from contextlib import nullcontext
 
+import allure
 import pytest
 
 from src.string_utils import StringUtils
 
+pytestmark = [
+    allure.parent_suite("Тестирование собственных функций"),
+    allure.suite("Тестирование работы со строками"),
+]
+
 
 class TestStringUtils:
 
+    @allure.title("Проверка обратной строки - позитивные кейсы")
     @pytest.mark.parametrize(
         ("input_str", "expected"), [("sueta", "ateus"), ("", ""), ("123", "321")]
     )
@@ -14,6 +21,7 @@ class TestStringUtils:
         utils = StringUtils()
         assert utils.reverse_string(input_str) == expected
 
+    @allure.title("Проверка обратной строки - негативные кейсы")
     @pytest.mark.parametrize(
         ("input_str", "expected"),
         [
@@ -27,6 +35,7 @@ class TestStringUtils:
         with expected:
             utils.reverse_string(input_str)
 
+    @allure.title("Проверка получения инициалов")
     @pytest.mark.parametrize(
         ("fullname", "expected"),
         [
